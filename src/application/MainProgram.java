@@ -7,17 +7,22 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import db.DB;
 import db.DbIntegrityException;
 import model.entities.Department;
+import model.entities.Seller;
 
 public class MainProgram {
 
 	public static void main(String[] args) {
 		
-		Department obj = new Department(5,"teste");
+		Department d = new Department(5,"teste");
 		
-		System.out.println(obj);
+		System.out.println(d);
+		
+		Seller s = new Seller(1,"name","name@gmail",new Date(),2000.0,d);
+		System.out.println(s);
 	}
 }
