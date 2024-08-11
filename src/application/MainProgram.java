@@ -49,5 +49,9 @@ public class MainProgram {
 		seller.setName("Cloud");
 		sellerDao.update(seller);
 		System.out.println("Updated");
+		
+		System.out.println("=== TEST 6: seller delete ===");
+		sellerDao.deleteById(newSeller.getId());
+		System.out.println("User:" + newSeller.getName() + " Deleted");
 	}
 }
