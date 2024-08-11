@@ -11,6 +11,7 @@ import db.DB;
 import db.DbException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
+import model.entities.Seller;
 
 public class DepartmentDaoJDBC implements DepartmentDao {
 
@@ -19,46 +20,50 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 	public DepartmentDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
-	
+
 	@Override
 	public void insert(Department obj) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement(
-					"INSERT INTO department"
-					+ "(Id, Name)"
-					+ "VALUES"
-					+ "(?, ?)", 
+			st = conn.prepareStatement("INSERT INTO department" + "(Id, Name)" + "VALUES" + "(?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			st.setInt(1, obj.getId());
 			st.setString(2, obj.getName());
-		
+
 			int rowsAffected = st.executeUpdate();
-			
-			if (rowsAffected>0) {	 
+
+			if (rowsAffected > 0) {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1); // id gerado
 					obj.setId(id);
 				}
 				DB.closeResultSet(rs);
-			}
-			else {
+			} else {
 				throw new DbException("No rows affected");
 			}
-		} 
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DB.closeStatement(st);
 		}
 	}
 
 	@Override
 	public void update(Department obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("UPDATE seller " + "SET Name = ?" + "WHERE Id = ?");
+			st.setString(1, obj.getName());
 
+			st.setInt(2, obj.getId());
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
@@ -69,8 +74,31 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public Department findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement(
+					"SELECT department.*, Name as DepName " + "FROM department " + "WHERE Id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {// se a consulta nao retornar nenhum registro o rs.next vai dar falso
+				Department dep = instantiateDepartment(rs);
+				return dep;
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
+	private Department instantiateDepartment(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("Id"));
+		dep.setName(rs.getString("DepName"));
+		return dep;
 	}
 
 	@Override

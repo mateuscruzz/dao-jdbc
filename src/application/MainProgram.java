@@ -61,10 +61,20 @@ public class MainProgram {
 		int id = sc.nextInt();
 		sellerDao.deleteById(id);
 		System.out.println("User:" + newSeller.getName() + " Deleted");*/
-		
-		System.out.println("=== TEST 7: department insert ===");
+		Department dep = new Department(6,"Supplies");
+		/*System.out.println("=== TEST 7: department insert ===");
 		Department dep = new Department(6,"Supplies");
 		departmentDao.insert(dep);
-		System.out.println(dep.toString());
+		System.out.println(dep.toString());*/
+		
+		System.out.println("=== TEST 8: department findById ===");
+		dep = departmentDao.findById(1);
+		System.out.println(dep);
+		
+		/*System.out.println("=== TEST 9: department update ===");
+		dep = departmentDao.findById(1);
+		dep.setName("Hardware");
+		departmentDao.update(dep);
+		System.out.println("Updated");*/
 	}
 }
