@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
+import model.dao.DepartmentDao;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -17,6 +18,8 @@ public class MainProgram {
 		
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
+		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
+		/*
 		System.out.println("=== TEST 1: seller findById ===");
 		Seller seller = sellerDao.findById(3);
 		System.out.println(seller);
@@ -57,6 +60,11 @@ public class MainProgram {
 		System.out.println("Enter a user id to be deleted: ");
 		int id = sc.nextInt();
 		sellerDao.deleteById(id);
-		System.out.println("User:" + newSeller.getName() + " Deleted");
+		System.out.println("User:" + newSeller.getName() + " Deleted");*/
+		
+		System.out.println("=== TEST 7: department insert ===");
+		Department dep = new Department(6,"Supplies");
+		departmentDao.insert(dep);
+		System.out.println(dep.toString());
 	}
 }
