@@ -34,11 +34,20 @@ public class MainProgram {
 		for (Seller obj : list) {
 			System.out.println(obj);
 		}
+		
 		System.out.println();
 		
 		System.out.println("=== TEST 4: seller insert ===");
 		Seller newSeller = new Seller(null,"Paul","paul@gmail.com",new Date(),5000.0,department);
 		sellerDao.insert(newSeller);
 		System.out.println(newSeller);
+		
+		System.out.println();
+		
+		System.out.println("=== TEST 5: seller update ===");
+		seller = sellerDao.findById(1);
+		seller.setName("Cloud");
+		sellerDao.update(seller);
+		System.out.println("Updated");
 	}
 }
